@@ -3,7 +3,7 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import mongoose from 'mongoose';
 import dbConsts from './constants/database';
-import { FreelaController } from './controller/freela-controller';
+import { Controller } from './controller/controller';
 import { DatabaseUriNotFoundException } from './exceptions/database-uri-not-found-exception';
 
 export class App {
@@ -27,7 +27,7 @@ export class App {
   }
 
   private setControllers() {
-    const freelaController = new FreelaController();
+    const freelaController = new Controller();
     this._server.use('/api/freelas', freelaController.router);
   }
 
