@@ -7,7 +7,9 @@ export const UserSchema = new Schema({
   whatsapp: {type: String, required: true},
   instagram: { type: String, required: true },
   description: { type: String, required: true },
-  freelas: { type: Array, required: false, default: [] }
+  freelas: { type: Array, required: false, default: [] },
+  total_posts: {type: Number, required: false, default: 0},
+  active_posts: {type: Number, required: false, default: 0}
 });
 
 const User = model<UserDocument>('User', UserSchema);
