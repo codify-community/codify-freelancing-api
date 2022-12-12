@@ -9,4 +9,6 @@ export interface UserDocument extends Document {
   whatsapp: string
   instagram: string
   freelas: [FreelaDocument]
+  total_posts: number
+  active_posts: number
 }
