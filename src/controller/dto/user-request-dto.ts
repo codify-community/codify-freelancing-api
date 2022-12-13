@@ -3,7 +3,7 @@ import { UserDocument } from '../../document/user';
 const BANNER_URL =
   'https://images-ext-1.discordapp.net/external/UbHx_o6Ccr5MGCQrP5e56lF_KylKO-qCJ1UtJzzPaeE/https/i.pinimg.com/564x/ec/b9/2d/ecb92d18c7855c986a5571c1b6f7cad2.jpg';
 
-export const toDocument = ({
+export const toUserDocument = ({
   _id,
   avatar_url,
   name,

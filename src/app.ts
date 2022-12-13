@@ -28,7 +28,7 @@ export class App {
 
   private setControllers() {
     const freelaController = new Controller();
-    this._server.use('/api/freelas', freelaController.router);
+    this._server.use('/codify', freelaController.router);
   }
 
   private async setMongoConnection() {
