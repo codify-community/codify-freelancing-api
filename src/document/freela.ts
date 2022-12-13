@@ -1,7 +1,7 @@
 import mongoose, { Document } from 'mongoose';
 
 export interface FreelaDocument extends Document {
-  id: mongoose.Types.ObjectId
+  id: mongoose.Types.ObjectId;
   title: string;
   description: string;
   price: number;

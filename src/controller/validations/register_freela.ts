@@ -1,6 +1,12 @@
 import { InvalidPayloadException } from '../../exceptions/invalid-payload-exception';
 
-const REQUIRED_FIELDS = ['title', 'description', 'price', 'deadline', 'technologies'];
+const REQUIRED_FIELDS = [
+  'title',
+  'description',
+  'price',
+  'deadline',
+  'technologies'
+];
 
 export const validateFreelaPayload = (freela) => {
   for (let i = 0; i < REQUIRED_FIELDS.length; i++) {
