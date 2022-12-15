@@ -8,6 +8,19 @@ import { UserFoundException } from '../exceptions/user_found';
 export class Service {
   private Repository = new Repository();
 
+  public async get() {
+    let freelas: FreelaDocument[] = []
+    const users: UserDocument[] = await this.Repository.get()
+    for(let i = 0; i < users.length; i++ ) {
+      for(let j = 0; j < users[i].freelas.length; j++){
+        freelas.push(users[i].freelas[j])
+      }
+    }
+    
+    freelas.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : 1);
+    return freelas
+  }
+
   public async createUser(_id: string, user: UserDocument) {
     const foundUser = await this.Repository.findById(_id);
 

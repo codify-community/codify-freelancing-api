@@ -4,6 +4,10 @@ import User from '../models/user';
 export class Repository {
   public findById = (_id: string) => User.findOne({ _id: _id }).exec();
 
+  public get(): Promise<UserDocument[]> {
+    return User.find().exec()
+  }
+
   public register_user(user: UserDocument) {
     return new User(user).save();
   }
