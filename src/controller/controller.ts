@@ -21,6 +21,12 @@ export class Controller {
   constructor() {
     this._router.post('/', this.register_user);
     this._router.post('/freela', this.register_freela);
+    this._router.get('/freela', this.get_freelas);
+  }
+
+  private get_freelas = async (req: Request, res: Response) => {
+    const freelas = await this.Service.get()
+    res.status(200).send(freelas)
   }
 
   private register_user = async (req: Request, res: Response) => {
@@ -41,12 +47,12 @@ export class Controller {
   };
 
   private register_freela = async (req: Request, res: Response) => {
-    const data = req.body;
-    let user_id: string = data.user_id;
-    delete data.user_id;
-    let freela: FreelaDocument = data;
     try {
-      validateFreelaPayload(freela);
+      const data = req.body;
+      validateFreelaPayload(data);
+      let user_id: string = data.user_id;
+      delete data.user_id;
+      let freela: FreelaDocument = data;
       freela = toFreelaDocument(freela);
       await this.Service.createFreela(user_id, freela);
       return res.sendStatus(201);
