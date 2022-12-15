@@ -5,7 +5,8 @@ const REQUIRED_FIELDS = [
   'description',
   'price',
   'deadline',
-  'technologies'
+  'technologies',
+  'user_id'
 ];
 
 export const validateFreelaPayload = (freela) => {
