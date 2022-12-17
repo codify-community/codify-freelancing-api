@@ -25,9 +25,9 @@ export class Controller {
   }
 
   private get_freelas = async (req: Request, res: Response) => {
-    const freelas = await this.Service.get()
-    res.status(200).send(freelas)
-  }
+    const freelas = await this.Service.get();
+    res.status(200).send(freelas);
+  };
 
   private register_user = async (req: Request, res: Response) => {
     let user: UserDocument = req.body;

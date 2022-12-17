@@ -10,23 +10,23 @@ export class Service {
   private Repository = new Repository();
 
   public async get() {
-    let freelas: FreelaGetDocument[] = []
-    const users: UserDocument[] = await this.Repository.get()
-    for(let i = 0; i < users.length; i++ ) {
-      for(let j = 0; j < users[i].freelas.length; j++){
-        console.log(users[i].name)
+    let freelas: FreelaGetDocument[] = [];
+    const users: UserDocument[] = await this.Repository.get();
+    for (let i = 0; i < users.length; i++) {
+      for (let j = 0; j < users[i].freelas.length; j++) {
+        console.log(users[i].name);
         const freela: FreelaGetDocument = {
           ...users[i].freelas[j],
           user_id: users[i].id,
           user_avatar: users[i].avatar_url,
           user_name: users[i].name
-        }
-        freelas.push(freela)
+        };
+        freelas.push(freela);
       }
     }
-    
-    freelas.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : 1);
-    return freelas
+
+    freelas.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+    return freelas;
   }
 
   public async createUser(_id: string, user: UserDocument) {
