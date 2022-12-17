@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export interface FreelaDocument {
+export interface FreelaGetDocument {
   id: mongoose.Types.ObjectId;
   title: string;
   description: string;
@@ -8,4 +8,7 @@ export interface FreelaDocument {
   deadline: string;
   technologies: string[];
   createdAt: Date;
+  user_id: string;
+  user_name: string;
+  user_avatar: string;
 }

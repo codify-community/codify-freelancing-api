@@ -4,16 +4,24 @@ import { AmountOfLargeCharacters } from '../exceptions/amount-of-large-character
 import { UserNotFound } from '../exceptions/user_not_found_exception';
 import { UserDocument } from '../document/user';
 import { UserFoundException } from '../exceptions/user_found';
+import { FreelaGetDocument } from '../document/freela_get';
 
 export class Service {
   private Repository = new Repository();
 
   public async get() {
-    let freelas: FreelaDocument[] = []
+    let freelas: FreelaGetDocument[] = []
     const users: UserDocument[] = await this.Repository.get()
     for(let i = 0; i < users.length; i++ ) {
       for(let j = 0; j < users[i].freelas.length; j++){
-        freelas.push(users[i].freelas[j])
+        console.log(users[i].name)
+        const freela: FreelaGetDocument = {
+          ...users[i].freelas[j],
+          user_id: users[i].id,
+          user_avatar: users[i].avatar_url,
+          user_name: users[i].name
+        }
+        freelas.push(freela)
       }
     }
     
