@@ -9,6 +9,7 @@ import { validateFreelaPayload } from './validations/register_freela';
 import { FreelaDocument } from '../document/freela';
 import { AmountOfLargeCharacters } from '../exceptions/amount-of-large-characters';
 import { toFreelaDocument } from './dto/freela-request-dto';
+import { UserNotFound } from '../exceptions/user_not_found_exception';
 
 export class Controller {
   private _router = Router();
@@ -22,6 +23,19 @@ export class Controller {
     this._router.post('/', this.register_user);
     this._router.post('/freela', this.register_freela);
     this._router.get('/freela', this.get_freelas);
+    this._router.get('/:id', this.get_user);
+  }
+
+  private get_user = async (req: Request, res: Response) => {
+    const _id: string = req.params.id
+    try {
+      const user = await this.Service.get_user(_id)
+      return res.status(200).send(user)
+    } catch (error) {
+      if (error instanceof UserNotFound) {
+        return res.sendStatus(404)
+      }
+    }
   }
 
   private get_freelas = async (req: Request, res: Response) => {
