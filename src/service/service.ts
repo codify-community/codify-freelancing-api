@@ -9,6 +9,14 @@ import { FreelaGetDocument } from '../document/freela_get';
 export class Service {
   private Repository = new Repository();
 
+  public async get_user(_id): Promise<UserDocument>  {
+    const user = await this.Repository.findById(_id)
+    if(!user){
+       throw new UserNotFound('User not found')
+    }
+    return user
+  }
+
   public async get() {
     let freelas: FreelaGetDocument[] = [];
     const users: UserDocument[] = await this.Repository.get();
