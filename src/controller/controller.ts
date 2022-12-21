@@ -10,6 +10,8 @@ import { FreelaDocument } from '../document/freela';
 import { AmountOfLargeCharacters } from '../exceptions/amount-of-large-characters';
 import { toFreelaDocument } from './dto/freela-request-dto';
 import { UserNotFound } from '../exceptions/user_not_found_exception';
+import mongoose from 'mongoose';
+import { FreelaNotFound } from '../exceptions/freela_not_found_exception';
 
 export class Controller {
   private _router = Router();
@@ -24,8 +26,26 @@ export class Controller {
     this._router.post('/freela', this.register_freela);
     this._router.get('/freela', this.get_freelas);
     this._router.get('/:id', this.get_user);
+    this._router.get('/:user_id/:freela_id', this.get_freela);
   }
 
+  private get_freela = async (req: Request, res: Response) => {
+    const user_id = req.params.user_id
+    const freela_id = req.params.freela_id
+
+    try {
+      const freela = await this.Service.get_freela(user_id, freela_id)
+      return res.status(200).send(freela)
+    } catch (error) {
+      if (error instanceof UserNotFound) {
+        return res.status(404).send(error.message)
+      }
+      if(error instanceof FreelaNotFound) {
+        return res.status(404).send(error.message)
+      }
+    }
+  }
+  
   private get_user = async (req: Request, res: Response) => {
     const _id: string = req.params.id
     try {

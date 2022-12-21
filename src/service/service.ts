@@ -5,9 +5,27 @@ import { UserNotFound } from '../exceptions/user_not_found_exception';
 import { UserDocument } from '../document/user';
 import { UserFoundException } from '../exceptions/user_found';
 import { FreelaGetDocument } from '../document/freela_get';
+import mongoose from 'mongoose';
+import { FreelaNotFound } from '../exceptions/freela_not_found_exception';
 
 export class Service {
   private Repository = new Repository();
+  
+public async get_freela(user_id: string, freela_id): Promise<FreelaGetDocument> {
+  const user = await this.get_user(user_id)
+  let freela = user.freelas.find(freela => freela.id === freela_id) as FreelaGetDocument;
+  if(!freela){
+    throw new FreelaNotFound('Freela not found')
+  }
+  freela = {
+    ...freela,
+    user_id: user.id,
+    user_avatar: user.avatar_url,
+    user_name: user.name
+  };
+
+  return freela
+}
 
   public async get_user(_id): Promise<UserDocument>  {
     const user = await this.Repository.findById(_id)
@@ -22,7 +40,6 @@ export class Service {
     const users: UserDocument[] = await this.Repository.get();
     for (let i = 0; i < users.length; i++) {
       for (let j = 0; j < users[i].freelas.length; j++) {
-        console.log(users[i].name);
         const freela: FreelaGetDocument = {
           ...users[i].freelas[j],
           user_id: users[i].id,

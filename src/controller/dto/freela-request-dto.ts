@@ -8,7 +8,7 @@ export const toFreelaDocument = ({
   technologies
 }: FreelaDocument): FreelaDocument => {
   const freela = {
-    id: new mongoose.Types.ObjectId(),
+    id: new mongoose.Types.ObjectId().toString(),
     title: title,
     description: description,
     price: price,
