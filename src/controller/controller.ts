@@ -10,7 +10,6 @@ import { FreelaDocument } from '../document/freela';
 import { AmountOfLargeCharacters } from '../exceptions/amount-of-large-characters';
 import { toFreelaDocument } from './dto/freela-request-dto';
 import { UserNotFound } from '../exceptions/user_not_found_exception';
-import mongoose from 'mongoose';
 import { FreelaNotFound } from '../exceptions/freela_not_found_exception';
 
 export class Controller {
