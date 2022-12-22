@@ -7,10 +7,10 @@ export const toUserDocument = ({
   _id,
   avatar_url,
   name,
-  description = 'Sem Descrição',
+  description = null,
   banner_url = BANNER_URL,
-  whatsapp = 'Sem Whatsapp',
-  instagram = 'Sem Instagram'
+  whatsapp = null,
+  instagram = null
 }: UserDocument): UserDocument => {
   const user = {
     _id: _id,
