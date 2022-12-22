@@ -5,7 +5,6 @@ import { UserNotFound } from '../exceptions/user_not_found_exception';
 import { UserDocument } from '../document/user';
 import { UserFoundException } from '../exceptions/user_found';
 import { FreelaGetDocument } from '../document/freela_get';
-import mongoose from 'mongoose';
 import { FreelaNotFound } from '../exceptions/freela_not_found_exception';
 
 export class Service {
@@ -26,6 +25,21 @@ public async get_freela(user_id: string, freela_id): Promise<FreelaGetDocument> 
 
   return freela
 }
+
+  public async delete_freela(user_id: string, freela_id) {
+    let user = await this.Repository.findById(user_id)
+    if (!user) {
+      throw new UserNotFound('User Not found!');
+    }
+    const freela_index = user?.freelas.findIndex((obj) => obj.id === freela_id)
+    console.log(freela_index)
+    if(freela_index || freela_index > - 1){
+      user?.freelas.splice(freela_index, 1);
+      return this.Repository.save_user(user);
+    }
+    throw new FreelaNotFound('Freela id not found')
+    
+  }
 
   public async get_user(_id): Promise<UserDocument>  {
     const user = await this.Repository.findById(_id)
