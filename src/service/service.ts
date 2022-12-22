@@ -40,6 +40,8 @@ export class Service {
     console.log(freela_index);
     if (freela_index || freela_index > -1) {
       user?.freelas.splice(freela_index, 1);
+      user.active_posts -= 1
+      user.total_posts -= 1
       return this.Repository.save_user(user);
     }
     throw new FreelaNotFound('Freela id not found');
@@ -83,7 +85,7 @@ export class Service {
   }
 
   public async createFreela(_id: string, freela: FreelaDocument) {
-    const user = this.Repository.findById(_id);
+    let user = await this.Repository.findById(_id);
     if (!user) {
       throw new UserNotFound('User Not found!');
     }
@@ -91,7 +93,9 @@ export class Service {
     if (freela.title.length > 70) {
       throw new AmountOfLargeCharacters('Too many characters in title');
     }
-
-    return this.Repository.register_freela(_id, freela);
+    user.active_posts += 1
+    user.total_posts += 1
+    user.freelas.push(freela);
+    return await this.Repository.save_user(user);
   }
 }
