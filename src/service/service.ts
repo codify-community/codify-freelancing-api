@@ -9,44 +9,48 @@ import { FreelaNotFound } from '../exceptions/freela_not_found_exception';
 
 export class Service {
   private Repository = new Repository();
-  
-public async get_freela(user_id: string, freela_id): Promise<FreelaGetDocument> {
-  const user = await this.get_user(user_id)
-  let freela = user.freelas.find(freela => freela.id === freela_id) as FreelaGetDocument;
-  if(!freela){
-    throw new FreelaNotFound('Freela not found')
-  }
-  freela = {
-    ...freela,
-    user_id: user.id,
-    user_avatar: user.avatar_url,
-    user_name: user.name
-  };
 
-  return freela
-}
+  public async get_freela(
+    user_id: string,
+    freela_id
+  ): Promise<FreelaGetDocument> {
+    const user = await this.get_user(user_id);
+    let freela = user.freelas.find(
+      (freela) => freela.id === freela_id
+    ) as FreelaGetDocument;
+    if (!freela) {
+      throw new FreelaNotFound('Freela not found');
+    }
+    freela = {
+      ...freela,
+      user_id: user.id,
+      user_avatar: user.avatar_url,
+      user_name: user.name
+    };
+
+    return freela;
+  }
 
   public async delete_freela(user_id: string, freela_id) {
-    let user = await this.Repository.findById(user_id)
+    let user = await this.Repository.findById(user_id);
     if (!user) {
       throw new UserNotFound('User Not found!');
     }
-    const freela_index = user?.freelas.findIndex((obj) => obj.id === freela_id)
-    console.log(freela_index)
-    if(freela_index || freela_index > - 1){
+    const freela_index = user?.freelas.findIndex((obj) => obj.id === freela_id);
+    console.log(freela_index);
+    if (freela_index || freela_index > -1) {
       user?.freelas.splice(freela_index, 1);
       return this.Repository.save_user(user);
     }
-    throw new FreelaNotFound('Freela id not found')
-    
+    throw new FreelaNotFound('Freela id not found');
   }
 
-  public async get_user(_id): Promise<UserDocument>  {
-    const user = await this.Repository.findById(_id)
-    if(!user){
-       throw new UserNotFound('User not found')
+  public async get_user(_id): Promise<UserDocument> {
+    const user = await this.Repository.findById(_id);
+    if (!user) {
+      throw new UserNotFound('User not found');
     }
-    return user
+    return user;
   }
 
   public async get() {

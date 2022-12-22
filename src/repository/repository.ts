@@ -19,6 +19,6 @@ export class Repository {
   }
 
   public async save_user(user) {
-    user.save()
+    user.save();
   }
 }

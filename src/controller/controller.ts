@@ -30,49 +30,49 @@ export class Controller {
   }
 
   private delete_freela = async (req: Request, res: Response) => {
-    const user_id = req.params.user_id
-    const freela_id = req.params.freela_id
+    const user_id = req.params.user_id;
+    const freela_id = req.params.freela_id;
     try {
-      await this.Service.delete_freela(user_id, freela_id)
-      return res.sendStatus(202)
+      await this.Service.delete_freela(user_id, freela_id);
+      return res.sendStatus(202);
     } catch (error) {
       if (error instanceof UserNotFound) {
-        return res.status(404).send(error.message)
+        return res.status(404).send(error.message);
       }
       if (error instanceof FreelaNotFound) {
-        return res.status(404).send(error.message)
+        return res.status(404).send(error.message);
       }
     }
-  }
+  };
 
   private get_freela = async (req: Request, res: Response) => {
-    const user_id = req.params.user_id
-    const freela_id = req.params.freela_id
+    const user_id = req.params.user_id;
+    const freela_id = req.params.freela_id;
 
     try {
-      const freela = await this.Service.get_freela(user_id, freela_id)
-      return res.status(200).send(freela)
+      const freela = await this.Service.get_freela(user_id, freela_id);
+      return res.status(200).send(freela);
     } catch (error) {
       if (error instanceof UserNotFound) {
-        return res.status(404).send(error.message)
+        return res.status(404).send(error.message);
       }
-      if(error instanceof FreelaNotFound) {
-        return res.status(404).send(error.message)
+      if (error instanceof FreelaNotFound) {
+        return res.status(404).send(error.message);
       }
     }
-  }
-  
+  };
+
   private get_user = async (req: Request, res: Response) => {
-    const _id: string = req.params.id
+    const _id: string = req.params.id;
     try {
-      const user = await this.Service.get_user(_id)
-      return res.status(200).send(user)
+      const user = await this.Service.get_user(_id);
+      return res.status(200).send(user);
     } catch (error) {
       if (error instanceof UserNotFound) {
-        return res.sendStatus(404)
+        return res.sendStatus(404);
       }
     }
-  }
+  };
 
   private get_freelas = async (req: Request, res: Response) => {
     const freelas = await this.Service.get();
