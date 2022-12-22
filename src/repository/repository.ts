@@ -17,4 +17,8 @@ export class Repository {
     user?.freelas.push(freela);
     return user?.save();
   }
+
+  public async save_user(user) {
+    user.save()
+  }
 }
