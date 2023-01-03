@@ -84,7 +84,7 @@ export class Controller {
     try {
       validateUserPayload(user);
       user = toUserDocument(user);
-      await this.Service.createUser(user._id, user);
+      await this.Service.update_user(user._id, user);
       return res.sendStatus(201);
     } catch (error) {
       if (error instanceof InvalidPayloadException) {

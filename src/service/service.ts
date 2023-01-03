@@ -10,6 +10,21 @@ import { FreelaNotFound } from '../exceptions/freela_not_found_exception';
 export class Service {
   private Repository = new Repository();
 
+  public async update_user(user_id, user_updated) {
+    try {
+      await this.createUser(user_id, user_updated);
+    } catch (error) {
+      let user = await this.Repository.findById(user_id);
+      user.name = user_updated.name;
+      user.avatar_url = user_updated.avatar_url;
+      user.description = user_updated.description;
+      user.banner_url = user_updated.banner_url;
+      user.whatsapp = user_updated.whatsapp;
+      user.instagram = user_updated.instagram;
+      this.Repository.save_user(user);
+    }
+  }
+
   public async get_freela(
     user_id: string,
     freela_id
@@ -40,8 +55,8 @@ export class Service {
     console.log(freela_index);
     if (freela_index || freela_index > -1) {
       user?.freelas.splice(freela_index, 1);
-      user.active_posts -= 1
-      user.total_posts -= 1
+      user.active_posts -= 1;
+      user.total_posts -= 1;
       return this.Repository.save_user(user);
     }
     throw new FreelaNotFound('Freela id not found');
@@ -93,8 +108,8 @@ export class Service {
     if (freela.title.length > 70) {
       throw new AmountOfLargeCharacters('Too many characters in title');
     }
-    user.active_posts += 1
-    user.total_posts += 1
+    user.active_posts += 1;
+    user.total_posts += 1;
     user.freelas.push(freela);
     return await this.Repository.save_user(user);
   }
