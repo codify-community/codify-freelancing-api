@@ -40,7 +40,9 @@ export class Service {
       ...freela,
       user_id: user.id,
       user_avatar: user.avatar_url,
-      user_name: user.name
+      user_name: user.name,
+      user_instagram: user.instagram,
+      user_whatsapp: user.whatsapp
     };
 
     return freela;
@@ -67,6 +69,7 @@ export class Service {
     if (!user) {
       throw new UserNotFound('User not found');
     }
+    user.freelas.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
     return user;
   }
 
@@ -79,7 +82,9 @@ export class Service {
           ...users[i].freelas[j],
           user_id: users[i].id,
           user_avatar: users[i].avatar_url,
-          user_name: users[i].name
+          user_name: users[i].name,
+          user_instagram: users[i].instagram,
+          user_whatsapp: users[i].whatsapp
         };
         freelas.push(freela);
       }

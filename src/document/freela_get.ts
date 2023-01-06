@@ -11,4 +11,6 @@ export interface FreelaGetDocument {
   user_id: string;
   user_name: string;
   user_avatar: string;
+  user_instagram: string | null;
+  user_whatsapp: string | null;
 }
