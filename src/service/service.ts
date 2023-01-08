@@ -87,7 +87,7 @@ export class Service {
   public async get() {
     let freelas: FreelaGetDocument[] = [];
     const users: UserDocument[] = await this.Repository.get();
-    console.log(users)
+
     for (let i = 0; i < users.length; i++) {
       for (let j = 0; j < users[i].freelas.length; j++) {
         const freela: FreelaGetDocument = {
