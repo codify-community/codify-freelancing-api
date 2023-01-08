@@ -41,7 +41,7 @@ export class App {
       }
 
       const server = await mongoose.connect(
-        `${dbConsts.DATABASE_ADDRESS}/CodeFreelas`
+        `${dbConsts.DATABASE_ADDRESS}/codefreelas`
       );
 
       console.log(

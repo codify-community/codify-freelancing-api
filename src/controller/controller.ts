@@ -23,10 +23,24 @@ export class Controller {
   constructor() {
     this._router.post('/', this.register_user);
     this._router.post('/freela', this.register_freela);
+    this._router.post('/:user_id/:freela_id', this.update_freela);
     this._router.get('/freela', this.get_freelas);
     this._router.get('/:id', this.get_user);
     this._router.get('/:user_id/:freela_id', this.get_freela);
     this._router.delete('/:user_id/:freela_id', this.delete_freela);
+  }
+
+  private update_freela = async (req: Request, res: Response) => {
+    const user_id = req.params.user_id;
+    const freela_id = req.params.freela_id;
+    const freela_updated = req.body.freela_updated
+
+    try {
+      await this.Service.update_freela(user_id, freela_id, freela_updated)
+      return res.sendStatus(200)
+    } catch (error) {
+      res.sendStatus(404)
+    }
   }
 
   private delete_freela = async (req: Request, res: Response) => {
