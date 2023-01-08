@@ -12,7 +12,7 @@ export class Service {
 
   public async update_freela(user_id, freela_id, freela_updated) {
     let user = await this.Repository.findById(user_id);
-    user.freela.map(f => {
+    user.freelas.map(f => {
       if(f.id === freela_id) {
         return freela_updated
       }
@@ -41,7 +41,7 @@ export class Service {
     freela_id
   ): Promise<FreelaGetDocument> {
     const user = await this.get_user(user_id);
-    let freela = user.freela.find(
+    let freela = user.freelas.find(
       (freela) => freela.id === freela_id
     ) as FreelaGetDocument;
     if (!freela) {
@@ -64,10 +64,10 @@ export class Service {
     if (!user) {
       throw new UserNotFound('User Not found!');
     }
-    const freela_index = user?.freela.findIndex((obj) => obj.id === freela_id);
+    const freela_index = user?.freelas.findIndex((obj) => obj.id === freela_id);
     console.log(freela_index);
     if (freela_index || freela_index > -1) {
-      user?.freela.splice(freela_index, 1);
+      user?.freelas.splice(freela_index, 1);
       user.active_posts -= 1;
       user.total_posts -= 1;
       return this.Repository.save_user(user);
@@ -80,17 +80,18 @@ export class Service {
     if (!user) {
       throw new UserNotFound('User not found');
     }
-    user.freela.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+    user.freelas.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
     return user;
   }
 
   public async get() {
     let freelas: FreelaGetDocument[] = [];
     const users: UserDocument[] = await this.Repository.get();
+    console.log(users)
     for (let i = 0; i < users.length; i++) {
-      for (let j = 0; j < users[i].freela.length; j++) {
+      for (let j = 0; j < users[i].freelas.length; j++) {
         const freela: FreelaGetDocument = {
-          ...users[i].freela[j],
+          ...users[i].freelas[j],
           user_id: users[i].id,
           user_avatar: users[i].avatar_url,
           user_name: users[i].name,
@@ -126,7 +127,7 @@ export class Service {
     }
     user.active_posts += 1;
     user.total_posts += 1;
-    user.freela.push(freela);
+    user.freelas.push(freela);
     return await this.Repository.save_user(user);
   }
 }

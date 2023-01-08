@@ -8,7 +8,7 @@ export interface UserDocument extends Document {
   avatar_url: string;
   whatsapp: string | null;
   instagram: string | null;
-  freela: [FreelaDocument];
+  freelas: [FreelaDocument];
   total_posts: number;
   active_posts: number;
 }
