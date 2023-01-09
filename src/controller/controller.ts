@@ -33,8 +33,7 @@ export class Controller {
   private update_freela = async (req: Request, res: Response) => {
     const user_id = req.params.user_id;
     const freela_id = req.params.freela_id;
-    const freela_updated = req.body.freela_updated
-
+    const freela_updated = req.body
     try {
       await this.Service.update_freela(user_id, freela_id, freela_updated)
       return res.sendStatus(200)

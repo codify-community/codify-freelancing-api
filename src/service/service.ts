@@ -12,12 +12,17 @@ export class Service {
 
   public async update_freela(user_id, freela_id, freela_updated) {
     let user = await this.Repository.findById(user_id);
-    user.freelas.map(f => {
-      if(f.id === freela_id) {
-        return freela_updated
+    console.log(user)
+    user.freelas.forEach(f => {
+      if (f.id === freela_id) {
+        f.title = freela_updated.title;
+        f.description = freela_updated.description;
+        f.price = freela_updated.price;
+        f.deadline = freela_updated.deadline;
+        f.technologies = freela_updated.technologies;
       }
-      return f
     });
+    console.log(user)
     await this.Repository.save_user(user)
   }
 
@@ -65,7 +70,7 @@ export class Service {
       throw new UserNotFound('User Not found!');
     }
     const freela_index = user?.freelas.findIndex((obj) => obj.id === freela_id);
-    console.log(freela_index);
+
     if (freela_index || freela_index > -1) {
       user?.freelas.splice(freela_index, 1);
       user.active_posts -= 1;
