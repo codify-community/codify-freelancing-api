@@ -33,14 +33,14 @@ export class Controller {
   private update_freela = async (req: Request, res: Response) => {
     const user_id = req.params.user_id;
     const freela_id = req.params.freela_id;
-    const freela_updated = req.body
+    const freela_updated = req.body;
     try {
-      await this.Service.update_freela(user_id, freela_id, freela_updated)
-      return res.sendStatus(200)
+      await this.Service.update_freela(user_id, freela_id, freela_updated);
+      return res.sendStatus(200);
     } catch (error) {
-      res.sendStatus(404)
+      res.sendStatus(404);
     }
-  }
+  };
 
   private delete_freela = async (req: Request, res: Response) => {
     const user_id = req.params.user_id;
@@ -61,7 +61,7 @@ export class Controller {
   private get_freela = async (req: Request, res: Response) => {
     const user_id = req.params.user_id;
     const freela_id = req.params.freela_id;
-    
+
     try {
       const freela = await this.Service.get_freela(user_id, freela_id);
       return res.status(200).send(freela);

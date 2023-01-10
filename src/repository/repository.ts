@@ -1,8 +1,8 @@
-import { FreelaDocument } from '../document/freela';
 import { UserDocument } from '../document/user';
 import User from '../models/user';
 export class Repository {
-  public findById = (_id: string): Promise<UserDocument> => User.findOne({ _id }).exec() as any;
+  public findById = (_id: string): Promise<UserDocument> =>
+    User.findOne({ _id }).exec() as any;
 
   public get(): Promise<UserDocument[]> {
     return User.find().exec();
@@ -13,6 +13,6 @@ export class Repository {
   }
 
   public async save_user(user) {
-    user.save();
+    return user.save();
   }
 }

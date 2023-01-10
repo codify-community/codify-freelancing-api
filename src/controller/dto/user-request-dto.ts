@@ -7,7 +7,7 @@ export const toUserDocument = ({
   _id,
   avatar_url,
   name,
-  description = "A Codify é muito maneira!",
+  description = 'A Codify é muito maneira!',
   banner_url = BANNER_URL,
   whatsapp = null,
   instagram = null

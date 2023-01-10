@@ -12,18 +12,20 @@ export class Service {
 
   public async update_freela(user_id, freela_id, freela_updated) {
     let user = await this.Repository.findById(user_id);
-    console.log(user)
-    user.freelas.forEach(f => {
-      if (f.id === freela_id) {
-        f.title = freela_updated.title;
-        f.description = freela_updated.description;
-        f.price = freela_updated.price;
-        f.deadline = freela_updated.deadline;
-        f.technologies = freela_updated.technologies;
-      }
-    });
-    console.log(user)
-    await this.Repository.save_user(user)
+    const freela_index = user.freelas.findIndex(
+      (freela) => freela.id == freela_id
+    );
+
+    const freela: FreelaDocument = {
+      ...user.freelas[freela_index],
+      title: freela_updated.title,
+      description: freela_updated.description,
+      price: freela_updated.price,
+      deadline: freela_updated.deadline,
+      technologies: freela_updated.technologies
+    };
+    user.freelas[freela_index] = freela;
+    await this.Repository.save_user(user);
   }
 
   public async update_user(user_id, user_updated) {

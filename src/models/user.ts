@@ -7,7 +7,7 @@ export const UserSchema = new Schema({
   banner_url: { type: String, default: BANNER_URL },
   avatar_url: { type: String, required: true },
   whatsapp: { type: String, default: null },
-  instagram: { type: String, default: null},
+  instagram: { type: String, default: null },
   description: { type: String, required: true },
   freelas: { type: Array, required: false, default: [] },
   total_posts: { type: Number, required: false, default: 0 },
