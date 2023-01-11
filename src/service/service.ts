@@ -22,7 +22,7 @@ export class Service {
       description: freela_updated.description,
       price: freela_updated.price,
       deadline: freela_updated.deadline,
-      technologies: freela_updated.technologies
+      technologies: freela_updated.technologies,
     };
     user.freelas[freela_index] = freela;
     await this.Repository.save_user(user);
@@ -65,8 +65,7 @@ export class Service {
 
     return freela;
   }
-
-  public async delete_freela(user_id: string, freela_id) {
+  public async quit_freela(user_id: string, freela_id, deleted: boolean) {
     let user = await this.Repository.findById(user_id);
     if (!user) {
       throw new UserNotFound('User Not found!');
@@ -75,7 +74,9 @@ export class Service {
 
     if (freela_index || freela_index > -1) {
       user?.freelas.splice(freela_index, 1);
-      user.active_posts -= 1;
+      if (deleted){
+        user.active_posts -= 1;
+      }
       user.total_posts -= 1;
       return this.Repository.save_user(user);
     }

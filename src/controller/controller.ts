@@ -28,6 +28,7 @@ export class Controller {
     this._router.get('/:id', this.get_user);
     this._router.get('/:user_id/:freela_id', this.get_freela);
     this._router.delete('/:user_id/:freela_id', this.delete_freela);
+    this._router.put('/:user_id/:freela_id', this.complete_freela);
   }
 
   private update_freela = async (req: Request, res: Response) => {
@@ -46,7 +47,23 @@ export class Controller {
     const user_id = req.params.user_id;
     const freela_id = req.params.freela_id;
     try {
-      await this.Service.delete_freela(user_id, freela_id);
+      await this.Service.quit_freela(user_id, freela_id, true);
+      return res.sendStatus(202);
+    } catch (error) {
+      if (error instanceof UserNotFound) {
+        return res.status(404).send(error.message);
+      }
+      if (error instanceof FreelaNotFound) {
+        return res.status(404).send(error.message);
+      }
+    }
+  };
+
+  private complete_freela = async (req: Request, res: Response) => {
+    const user_id = req.params.user_id;
+    const freela_id = req.params.freela_id;
+    try {
+      await this.Service.quit_freela(user_id, freela_id, false);
       return res.sendStatus(202);
     } catch (error) {
       if (error instanceof UserNotFound) {
