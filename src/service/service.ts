@@ -1,16 +1,35 @@
 import { FreelaDocument } from '../document/freela';
 import { Repository } from '../repository/repository';
-import { AmountOfLargeCharacters } from '../exceptions/amount-of-large-characters';
+import { AmountOfLargeCharacters } from '../exceptions/amount_of_large_characters';
 import { UserNotFound } from '../exceptions/user_not_found_exception';
 import { UserDocument } from '../document/user';
 import { UserFoundException } from '../exceptions/user_found';
-import { FreelaGetDocument } from '../document/freela_get';
+import { FreelaGetDocument } from '../document/freelaGet';
 import { FreelaNotFound } from '../exceptions/freela_not_found_exception';
-
+import { UserHasBannedException } from '../exceptions/user_has_banned';
 export class Service {
   private Repository = new Repository();
+  public async registerBan(user_id) {
+    const hasBan = await this.findBan(user_id);
+    if (hasBan) {
+      throw new UserFoundException('User already banned');
+    }
+    await this.Repository.registerBan(user_id);
+  }
 
-  public async update_freela(user_id, freela_id, freela_updated) {
+  public async findBan(user_id) {
+    return await this.Repository.findBanById(user_id);
+  }
+
+  public async removeBan(user_id) {
+    const user = this.findBan(user_id);
+    if (!user) {
+      throw new UserNotFound('User id not banned');
+    }
+    await this.Repository.removeBan(user_id);
+  }
+
+  public async updateFreela(user_id, freela_id, freela_updated) {
     let user = await this.Repository.findById(user_id);
     const freela_index = user.freelas.findIndex(
       (freela) => freela.id == freela_id
@@ -22,16 +41,27 @@ export class Service {
       description: freela_updated.description,
       price: freela_updated.price,
       deadline: freela_updated.deadline,
-      technologies: freela_updated.technologies,
+      technologies: freela_updated.technologies
     };
     user.freelas[freela_index] = freela;
-    await this.Repository.save_user(user);
+    await this.Repository.saveUser(user);
   }
 
-  public async update_user(user_id, user_updated) {
+  public async updateUser(user_id, user_updated) {
+    const hasBan = await this.findBan(user_id);
+    if (hasBan) {
+      throw new UserHasBannedException('User has banned');
+    }
     try {
       await this.createUser(user_id, user_updated);
     } catch (error) {
+      console.log(error);
+      if (error instanceof UserHasBannedException) {
+        throw new UserHasBannedException('User has banned');
+      }
+      if (error instanceof UserFoundException) {
+        throw new UserFoundException('User already exists');
+      }
       let user = await this.Repository.findById(user_id);
       user.name = user_updated.name;
       user.avatar_url = user_updated.avatar_url;
@@ -39,15 +69,15 @@ export class Service {
       user.banner_url = user_updated.banner_url;
       user.whatsapp = user_updated.whatsapp;
       user.instagram = user_updated.instagram;
-      this.Repository.save_user(user);
+      this.Repository.saveUser(user);
     }
   }
 
-  public async get_freela(
+  public async getFreela(
     user_id: string,
     freela_id
   ): Promise<FreelaGetDocument> {
-    const user = await this.get_user(user_id);
+    const user = await this.getUser(user_id);
     let freela = user.freelas.find(
       (freela) => freela.id === freela_id
     ) as FreelaGetDocument;
@@ -65,7 +95,7 @@ export class Service {
 
     return freela;
   }
-  public async quit_freela(user_id: string, freela_id, deleted: boolean) {
+  public async quitFreela(user_id: string, freela_id, deleted: boolean) {
     let user = await this.Repository.findById(user_id);
     if (!user) {
       throw new UserNotFound('User Not found!');
@@ -74,16 +104,16 @@ export class Service {
 
     if (freela_index || freela_index > -1) {
       user?.freelas.splice(freela_index, 1);
-      if (deleted){
+      if (deleted) {
         user.total_posts -= 1;
       }
       user.active_posts -= 1;
-      return this.Repository.save_user(user);
+      return this.Repository.saveUser(user);
     }
     throw new FreelaNotFound('Freela id not found');
   }
 
-  public async get_user(_id): Promise<UserDocument> {
+  public async getUser(_id): Promise<UserDocument> {
     const user = await this.Repository.findById(_id);
     if (!user) {
       throw new UserNotFound('User not found');
@@ -115,13 +145,18 @@ export class Service {
   }
 
   public async createUser(_id: string, user: UserDocument) {
+    const hasBan = await this.findBan(_id);
+    if (hasBan) {
+      throw new UserHasBannedException('User has banned');
+    }
+
     const foundUser = await this.Repository.findById(_id);
 
     if (foundUser) {
       throw new UserFoundException('User already exists');
     }
 
-    this.Repository.register_user(user);
+    this.Repository.registerUser(user);
   }
 
   public async createFreela(_id: string, freela: FreelaDocument) {
@@ -136,6 +171,6 @@ export class Service {
     user.active_posts += 1;
     user.total_posts += 1;
     user.freelas.push(freela);
-    return await this.Repository.save_user(user);
+    return await this.Repository.saveUser(user);
   }
 }

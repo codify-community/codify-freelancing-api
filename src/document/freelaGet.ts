@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-
 export interface FreelaGetDocument {
   id: string;
   title: string;

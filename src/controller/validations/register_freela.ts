@@ -1,4 +1,4 @@
-import { InvalidPayloadException } from '../../exceptions/invalid-payload-exception';
+import { InvalidPayloadException } from '../../exceptions/invalid_payload_exception';
 
 const REQUIRED_FIELDS = [
   'title',
