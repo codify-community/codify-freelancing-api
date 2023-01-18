@@ -4,7 +4,7 @@ import express, { Application } from 'express';
 import mongoose from 'mongoose';
 import dbConsts from './constants/database';
 import { Controller } from './controller/controller';
-import { DatabaseUriNotFoundException } from './exceptions/database-uri-not-found-exception';
+import { DatabaseUriNotFoundException } from './exceptions/database_url_not_found_exception';
 
 export class App {
   private _server: Application;
@@ -36,7 +36,7 @@ export class App {
     try {
       if (!dbConsts.DATABASE_ADDRESS) {
         throw new DatabaseUriNotFoundException(
-          'missing environment variable [MONGO_CONNECTION_URI]'
+          'missing environment variable [DATABASE_ADDRESS]'
         );
       }
 
